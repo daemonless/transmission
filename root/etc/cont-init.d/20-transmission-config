@@ -1,0 +1,39 @@
+#!/bin/sh
+# Initialize Transmission config
+
+# Set ownership based on PUID/PGID environment variables
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
+
+# Update transmission user/group IDs if different from default
+if [ "$PUID" != "921" ] || [ "$PGID" != "921" ]; then
+    echo "Setting transmission UID:GID to $PUID:$PGID"
+    pw groupmod transmission -g "$PGID" 2>/dev/null || true
+fi
+
+# Ensure directories exist and have correct ownership
+mkdir -p /config /downloads/complete /downloads/incomplete /watch
+chown -R bsd:bsd /config /downloads /watch
+
+# Create default settings.json if it doesn't exist
+if [ ! -f /config/settings.json ]; then
+    echo "Creating default settings.json"
+    cat > /config/settings.json << 'EOF'
+{
+    "download-dir": "/downloads/complete",
+    "incomplete-dir": "/downloads/incomplete",
+    "incomplete-dir-enabled": true,
+    "watch-dir": "/watch",
+    "watch-dir-enabled": true,
+    "rpc-authentication-required": false,
+    "rpc-bind-address": "0.0.0.0",
+    "rpc-enabled": true,
+    "rpc-host-whitelist-enabled": false,
+    "rpc-port": 9091,
+    "rpc-url": "/transmission/",
+    "rpc-whitelist-enabled": false,
+    "peer-port": 51413
+}
+EOF
+    chown bsd:bsd /config/settings.json
+fi

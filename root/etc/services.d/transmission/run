@@ -1,0 +1,11 @@
+#!/bin/sh
+# Transmission s6 service
+
+export HOME=/config
+
+export TRANSMISSION_WEB_HOME=/usr/local/share/transmission/web
+
+# Signal readiness when the port is responsive
+s6-ready-when fetch -qo /dev/null http://localhost:9091/transmission/web/
+
+exec /usr/local/bin/s6-setuidgid bsd /usr/local/bin/transmission-daemon -f -g /config --port 9091
