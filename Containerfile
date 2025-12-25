@@ -7,7 +7,7 @@ FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="transmission-daemon transmission-web ca_root_nss"
-LABEL org.opencontainers.image.title="transmission" \
+LABEL org.opencontainers.image.title="Transmission" \
     org.opencontainers.image.description="Transmission BitTorrent client on FreeBSD" \
     org.opencontainers.image.source="https://github.com/daemonless/transmission" \
     org.opencontainers.image.url="https://transmissionbt.com/" \
