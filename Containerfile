@@ -9,6 +9,9 @@ ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="transmission-daemon transmission-web ca_root_nss"
 ARG UPSTREAM_URL="https://api.github.com/repos/transmission/transmission/releases/latest"
 ARG UPSTREAM_JQ=".tag_name"
+ARG HEALTHCHECK_ENDPOINT="http://localhost:9091/transmission/web/"
+
+ENV HEALTHCHECK_URL="${HEALTHCHECK_ENDPOINT}"
 
 LABEL org.opencontainers.image.title="Transmission" \
     org.opencontainers.image.description="Transmission BitTorrent client on FreeBSD" \
@@ -25,6 +28,7 @@ LABEL org.opencontainers.image.title="Transmission" \
     io.daemonless.category="Downloaders" \
     io.daemonless.upstream-url="${UPSTREAM_URL}" \
     io.daemonless.upstream-jq="${UPSTREAM_JQ}" \
+    io.daemonless.healthcheck-url="${HEALTHCHECK_ENDPOINT}" \
     io.daemonless.packages="${PACKAGES}"
 
 # Install transmission daemon and web interface
