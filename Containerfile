@@ -7,6 +7,9 @@ FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="transmission-daemon transmission-web ca_root_nss"
+ARG UPSTREAM_URL="https://api.github.com/repos/transmission/transmission/releases/latest"
+ARG UPSTREAM_JQ=".tag_name"
+
 LABEL org.opencontainers.image.title="Transmission" \
     org.opencontainers.image.description="Transmission BitTorrent client on FreeBSD" \
     org.opencontainers.image.source="https://github.com/daemonless/transmission" \
@@ -20,6 +23,8 @@ LABEL org.opencontainers.image.title="Transmission" \
     io.daemonless.volumes="/downloads,/watch" \
     io.daemonless.pkg-source="containerfile" \
     io.daemonless.category="Downloaders" \
+    io.daemonless.upstream-url="${UPSTREAM_URL}" \
+    io.daemonless.upstream-jq="${UPSTREAM_JQ}" \
     io.daemonless.packages="${PACKAGES}"
 
 # Install transmission daemon and web interface
