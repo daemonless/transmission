@@ -20,8 +20,6 @@ LABEL org.opencontainers.image.title="Transmission" \
     io.daemonless.volumes="/downloads,/watch" \
     io.daemonless.pkg-source="containerfile" \
     io.daemonless.category="Downloaders" \
-    io.daemonless.upstream-mode="pkg" \
-    io.daemonless.upstream-package="transmission-daemon" \
     io.daemonless.packages="${PACKAGES}"
 
 # Install transmission daemon and web interface
