@@ -1,5 +1,4 @@
 icon: ':simple-transmission:'
 cit:
-  mode: screenshot
+  mode: port
   port: 9091
-  health: /transmission/web/

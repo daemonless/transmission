@@ -1,0 +1,51 @@
+name: transmission
+
+x-daemonless:
+  title: "Transmission"
+  icon: ":simple-transmission:"
+  category: "Downloaders"
+  description: "Transmission BitTorrent client on FreeBSD."
+  upstream_url: "https://github.com/transmission/transmission"
+  web_url: "https://transmissionbt.com/"
+  freshports_url: "https://www.freshports.org/net-p2p/transmission-daemon/"
+  user: "bsd"
+  mlock: false
+  upstream_binary: false
+  
+  docs:
+    env:
+      PUID: "User ID for the application process"
+      PGID: "Group ID for the application process"
+      TZ: "Timezone for the container"
+      USER: "Optional: Web UI Username"
+      PASS: "Optional: Web UI Password"
+    volumes:
+      /config: "Configuration directory"
+      /downloads: "Download directory"
+      /watch: "Watch directory for .torrent files"
+    ports:
+      9091: "Web UI"
+      51413: "Torrent peer port"
+
+services:
+  transmission:
+    image: ghcr.io/daemonless/transmission:latest
+    container_name: transmission
+    restart: unless-stopped
+    
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - USER=
+      - PASS=
+
+    volumes:
+      - /path/to/containers/transmission:/config
+      - /path/to/downloads:/downloads
+      - /path/to/watch:/watch
+
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
