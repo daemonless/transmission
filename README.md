@@ -64,9 +64,9 @@ Access at: `http://localhost:9091`
     state: started
     restart_policy: always
     env:
-      PUID: "1000"
-      PGID: "1000"
-      TZ: "UTC"
+      PUID: "@PUID@"
+      PGID: "@PGID@"
+      TZ: "@TZ@"
       USER: ""
       PASS: "<PASS>"
     ports:
@@ -80,7 +80,6 @@ Access at: `http://localhost:9091`
 ```
 
 ## Configuration
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -90,7 +89,6 @@ Access at: `http://localhost:9091`
 | `TZ` | `UTC` | Timezone for the container |
 | `USER` | `` | Optional: Web UI Username |
 | `PASS` | `<PASS>` | Optional: Web UI Password |
-
 ### Volumes
 
 | Path | Description |
@@ -98,7 +96,6 @@ Access at: `http://localhost:9091`
 | `/config` | Configuration directory |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for .torrent files |
-
 ### Ports
 
 | Port | Protocol | Description |
