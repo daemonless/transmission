@@ -2,3 +2,5 @@ icon: ':simple-transmission:'
 cit:
   mode: port
   port: 9091
+versions:
+  pkg_name: transmission-daemon
