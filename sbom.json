@@ -1,11 +1,12 @@
 {
   "image": "transmission",
-  "generated": "2026-02-02T13:48:46Z",
+  "generated": "2026-02-06T00:24:41Z",
   "tags": {
     "pkg-latest": {
+      "arch": "amd64",
       "app_version": "4.0.6_7",
       "source": "freebsd-latest",
-      "generated": "2026-02-02T13:33:13Z",
+      "generated": "2026-02-06T00:13:20Z",
       "packages": {
         "freebsd": [
           {
@@ -248,9 +249,10 @@
       }
     },
     "pkg": {
+      "arch": "amd64",
       "app_version": "4.0.6_7",
       "source": "freebsd-quarterly",
-      "generated": "2026-02-02T13:42:28Z",
+      "generated": "2026-02-06T00:01:52Z",
       "packages": {
         "freebsd": [
           {
