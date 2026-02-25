@@ -1,12 +1,12 @@
 {
   "image": "transmission",
-  "generated": "2026-02-20T08:31:58Z",
+  "generated": "2026-02-25T09:01:51Z",
   "tags": {
     "pkg-latest": {
       "arch": "amd64",
-      "app_version": "4.0.6_7",
+      "app_version": "4.1.1",
       "source": "pkg",
-      "generated": "2026-02-20T08:31:30Z",
+      "generated": "2026-02-25T09:01:41Z",
       "packages": {
         "freebsd": [
           {
@@ -134,6 +134,10 @@
             "version": "3.117_2"
           },
           {
+            "name": "crc32c",
+            "version": "1.1.2"
+          },
+          {
             "name": "curl",
             "version": "8.17.0"
           },
@@ -175,7 +179,7 @@
           },
           {
             "name": "libnatpmp",
-            "version": "20230423"
+            "version": "20250404"
           },
           {
             "name": "libnghttp2",
@@ -195,7 +199,7 @@
           },
           {
             "name": "libutp",
-            "version": "g20231123"
+            "version": "g20241117"
           },
           {
             "name": "miniupnpc",
@@ -223,11 +227,11 @@
           },
           {
             "name": "transmission-daemon",
-            "version": "4.0.6_7"
+            "version": "4.1.1"
           },
           {
             "name": "transmission-web",
-            "version": "4.0.6_7"
+            "version": "4.1.1"
           },
           {
             "name": "zstd",
@@ -244,7 +248,7 @@
         "rust": []
       },
       "summary": {
-        "freebsd": 56,
+        "freebsd": 57,
         "dotnet": 0,
         "go": 0,
         "java": 0,
@@ -253,14 +257,14 @@
         "python": 0,
         "ruby": 0,
         "rust": 0,
-        "total": 56
+        "total": 57
       }
     },
     "pkg": {
       "arch": "amd64",
       "app_version": "4.0.6_7",
       "source": "pkg",
-      "generated": "2026-02-20T08:31:44Z",
+      "generated": "2026-02-25T09:00:07Z",
       "packages": {
         "freebsd": [
           {
