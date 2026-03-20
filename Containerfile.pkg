@@ -17,7 +17,7 @@ ENV HEALTHCHECK_URL="${HEALTHCHECK_ENDPOINT}"
 
 # --- Metadata (Injected by Generator) ---
 LABEL org.opencontainers.image.title="Transmission" \
-      org.opencontainers.image.description="Transmission BitTorrent client on FreeBSD." \
+      org.opencontainers.image.description="Lightweight BitTorrent client with a web UI for managing torrent downloads." \
       org.opencontainers.image.source="https://github.com/daemonless/transmission" \
       org.opencontainers.image.url="https://transmissionbt.com/" \
       org.opencontainers.image.documentation="https://github.com/transmission/transmission" \

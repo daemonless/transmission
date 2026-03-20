@@ -5,15 +5,28 @@ Source: dbuild templates
 
 # Transmission
 
-Transmission BitTorrent client on FreeBSD.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/transmission?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/transmission/commits)
+
+Lightweight BitTorrent client with a web UI for managing torrent downloads.
 
 | | |
 |---|---|
 | **Port** | 9091 |
 | **Registry** | `ghcr.io/daemonless/transmission` |
-| **Docs** | [daemonless.io/images/transmission](https://daemonless.io/images/transmission/) |
 | **Source** | [https://github.com/transmission/transmission](https://github.com/transmission/transmission) |
 | **Website** | [https://transmissionbt.com/](https://transmissionbt.com/) |
+
+## Version Tags
+
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` / `pkg` | **FreeBSD Quarterly**. Uses stable, tested packages. | Most users. Matches Linux Docker behavior. |
+| `pkg-latest` | **FreeBSD Latest**. Rolling package updates. | Newest FreeBSD packages. |
+
+## Prerequisites
+
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
 
 ## Deployment
 
@@ -31,14 +44,68 @@ services:
       - USER=
       - PASS=<PASS>
     volumes:
-      - /path/to/containers/transmission:/config
-      - /path/to/downloads:/downloads
-      - /path/to/containers/transmission/watch:/watch
+      - "/path/to/containers/transmission:/config"
+      - "/path/to/downloads:/downloads"
+      - "/path/to/containers/transmission/watch:/watch"
     ports:
       - 9091:9091
       - 51413:51413
       - 51413:51413
     restart: unless-stopped
+```
+
+### AppJail Director
+
+**.env**:
+
+```
+DIRECTOR_PROJECT=transmission
+PUID=1000
+PGID=1000
+TZ=UTC
+USER=
+PASS=<PASS>
+```
+
+**appjail-director.yml**:
+
+```yaml
+options:
+  - virtualnet: ':<random> default'
+  - nat:
+services:
+  transmission:
+    name: transmission
+    options:
+      - container: 'boot args:--pull'
+    oci:
+      user: root
+      environment:
+        - PUID: !ENV '${PUID}'
+        - PGID: !ENV '${PGID}'
+        - TZ: !ENV '${TZ}'
+        - USER: !ENV '${USER}'
+        - PASS: !ENV '${PASS}'
+    volumes:
+      - transmission: /config
+      - downloads: /downloads
+      - transmission_watch: /watch
+volumes:
+  transmission:
+    device: '/path/to/containers/transmission'
+  downloads:
+    device: 'downloads'
+  transmission_watch:
+    device: '/path/to/containers/transmission/watch'
+```
+
+**Makejail**:
+
+```
+ARG tag=latest
+
+OPTION overwrite=force
+OPTION from=ghcr.io/daemonless/transmission:${tag}
 ```
 
 ### Podman CLI
@@ -48,9 +115,9 @@ podman run -d --name transmission \
   -p 9091:9091 \
   -p 51413:51413 \
   -p 51413:51413 \
-  -e PUID=@PUID@ \
-  -e PGID=@PGID@ \
-  -e TZ=@TZ@ \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=UTC \
   -e USER= \
   -e PASS=<PASS> \
   -v /path/to/containers/transmission:/config \
@@ -58,7 +125,6 @@ podman run -d --name transmission \
   -v /path/to/containers/transmission/watch:/watch \
   ghcr.io/daemonless/transmission:latest
 ```
-Access at: `http://localhost:9091`
 
 ### Ansible
 
@@ -70,9 +136,9 @@ Access at: `http://localhost:9091`
     state: started
     restart_policy: always
     env:
-      PUID: "@PUID@"
-      PGID: "@PGID@"
-      TZ: "@TZ@"
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "UTC"
       USER: ""
       PASS: "<PASS>"
     ports:
@@ -85,7 +151,10 @@ Access at: `http://localhost:9091`
       - "/path/to/containers/transmission/watch:/watch"
 ```
 
-## Configuration
+Access at: `http://localhost:9091`
+
+## Parameters
+
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -95,6 +164,7 @@ Access at: `http://localhost:9091`
 | `TZ` | `UTC` | Timezone for the container |
 | `USER` | `` | Optional: Web UI Username |
 | `PASS` | `<PASS>` | Optional: Web UI Password |
+
 ### Volumes
 
 | Path | Description |
@@ -102,6 +172,7 @@ Access at: `http://localhost:9091`
 | `/config` | Configuration directory |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for .torrent files |
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -110,8 +181,10 @@ Access at: `http://localhost:9091`
 | `51413` | TCP | Torrent peer port |
 | `51413` | UDP | Torrent peer port |
 
-## Notes
+**Architectures:** amd64
+**User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
+**Base:** FreeBSD 15.0
 
-- **Architectures:** amd64
-- **User:** `bsd` (UID/GID set via PUID/PGID)
-- **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD)
+---
+
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
