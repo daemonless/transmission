@@ -78,6 +78,9 @@ services:
     name: transmission
     options:
       - container: 'boot args:--pull'
+      - expose="9091:9091 proto:tcp" \
+      - expose="51413:51413 proto:tcp" \
+      - expose="51413:51413 proto:udp" \
     oci:
       user: root
       environment:
@@ -107,6 +110,7 @@ ARG tag=latest
 OPTION overwrite=force
 OPTION from=ghcr.io/daemonless/transmission:${tag}
 ```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Podman CLI
 
@@ -125,6 +129,29 @@ podman run -d --name transmission \
   -v /path/to/containers/transmission/watch:/watch \
   ghcr.io/daemonless/transmission:latest
 ```
+
+### AppJail
+
+```bash
+appjail oci run -Pd \
+  -o overwrite=force \
+  -o container="args:--pull" \
+  -o virtualnet=":<random> default" \
+  -o nat \
+  -o expose="9091:9091 proto:tcp" \
+  -o expose="51413:51413 proto:tcp" \
+  -o expose="51413:51413 proto:udp" \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=UTC \
+  -e USER= \
+  -e PASS=<PASS> \
+  -o fstab="/path/to/containers/transmission /config <pseudofs>" \
+  -o fstab="/path/to/downloads /downloads <pseudofs>" \
+  -o fstab="/path/to/containers/transmission/watch /watch <pseudofs>" \
+  ghcr.io/daemonless/transmission:latest transmission
+```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Ansible
 
