@@ -10,7 +10,6 @@ Source: dbuild templates
 
 Lightweight BitTorrent client with a web UI for managing torrent downloads.
 
-
 | | |
 |---|---|
 | **Port** | 9091 |
@@ -36,22 +35,22 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 ```yaml
 services:
   transmission:
-    image: ghcr.io/daemonless/transmission:latest
+    image: "ghcr.io/daemonless/transmission:latest"
     container_name: transmission
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
-      - USER=
-      - PASS=<PASS>
+      - PUID=1000  # User ID for the application process
+      - PGID=1000  # Group ID for the application process
+      - TZ=UTC  # Timezone for the container
+      - USER=  # Optional: Web UI Username
+      - PASS=<PASS>  # Optional: Web UI Password
     volumes:
       - "/path/to/containers/transmission:/config"
       - "/path/to/downloads:/downloads"
       - "/path/to/containers/transmission/watch:/watch"
     ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413
+      - "9091:9091"
+      - "51413:51413"
+      - "51413:51413"
     restart: unless-stopped
 ```
 
@@ -133,7 +132,7 @@ podman run -d --name transmission \
 - name: Deploy transmission
   containers.podman.podman_container:
     name: transmission
-    image: ghcr.io/daemonless/transmission:latest
+    image: "ghcr.io/daemonless/transmission:latest"
     state: started
     restart_policy: always
     env:
@@ -151,8 +150,6 @@ podman run -d --name transmission \
       - "/path/to/downloads:/downloads"
       - "/path/to/containers/transmission/watch:/watch"
 ```
-
-Access at: `http://localhost:9091`
 
 ## Parameters
 
