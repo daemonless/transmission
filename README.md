@@ -18,14 +18,12 @@ Lightweight BitTorrent client with a web UI for managing torrent downloads.
 | **Website** | [https://transmissionbt.com/](https://transmissionbt.com/) |
 
 ## Version Tags
-
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
 | `latest` / `pkg` | **FreeBSD Quarterly**. Uses stable, tested packages. | Most users. Matches Linux Docker behavior. |
 | `pkg-latest` | **FreeBSD Latest**. Rolling package updates. | Newest FreeBSD packages. |
 
 ## Prerequisites
-
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
 
 ## Deployment
@@ -55,10 +53,11 @@ services:
 ```
 
 ### AppJail Director
-
 **.env**:
 
 ```
+# .env
+
 DIRECTOR_PROJECT=transmission
 PUID=1000
 PGID=1000
@@ -70,6 +69,8 @@ PASS=<PASS>
 **appjail-director.yml**:
 
 ```yaml
+# appjail-director.yml
+
 options:
   - virtualnet: ':<random> default'
   - nat:
@@ -78,9 +79,9 @@ services:
     name: transmission
     options:
       - container: 'boot args:--pull'
-      - expose="9091:9091 proto:tcp" \
-      - expose="51413:51413 proto:tcp" \
-      - expose="51413:51413 proto:udp" \
+      - expose: '9091:9091 proto:tcp'
+      - expose: '51413:51413 proto:tcp'
+      - expose: '51413:51413 proto:udp'
     oci:
       user: root
       environment:
@@ -105,6 +106,8 @@ volumes:
 **Makejail**:
 
 ```
+# Makejail
+
 ARG tag=latest
 
 OPTION overwrite=force
@@ -206,9 +209,9 @@ appjail oci run -Pd \
 | `51413` | TCP | Torrent peer port |
 | `51413` | UDP | Torrent peer port |
 
-**Architectures:** amd64
+**Architectures:** amd64, aarch64
 **User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
-**Base:** FreeBSD 15.0
+**Base:** FreeBSD 15.1
 
 ---
 
