@@ -4,6 +4,9 @@ cit:
   port: 9091
 build:
   pkg_name: transmission-daemon
+  architectures:
+    - amd64
+    - aarch64
   variants:
     - tag: pkg
       containerfile: Containerfile.pkg
