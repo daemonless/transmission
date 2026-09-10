@@ -39,8 +39,8 @@ services:
       - PUID=1000  # User ID for the application process
       - PGID=1000  # Group ID for the application process
       - TZ=UTC  # Timezone for the container
-      - USER=  # Optional: Web UI Username
-      - PASS=<PASS>  # Optional: Web UI Password
+      - USER=  # Web UI Username
+      - PASS=<PASS>  # Web UI Password
     volumes:
       - "/path/to/containers/transmission:/config"
       - "/path/to/downloads:/downloads"
@@ -81,7 +81,7 @@ services:
   transmission:
     name: transmission
     options:
-      - container: 'boot args:--pull'
+      - container: 'args:--pull'
       - expose: '9091:9091 proto:tcp'
       - expose: '51413:51413 proto:tcp'
       - expose: '51413:51413 proto:udp'
@@ -113,13 +113,18 @@ volumes:
 
 ARG tag=latest
 
+OPTION container=boot
 OPTION overwrite=force
 OPTION from=ghcr.io/daemonless/transmission:${tag}
 ```
 
 Save the files above, then run `appjail-director up`.
 
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
 ### Podman CLI
 
@@ -143,6 +148,7 @@ Save as `run.sh`, then run `sh run.sh`.
 
 ### AppJail
 
+
 ```bash
 appjail oci run -Pd \
   -o overwrite=force \
@@ -163,30 +169,39 @@ appjail oci run -Pd \
   ghcr.io/daemonless/transmission:latest transmission
 ```
 
-Save as `run.sh`, then run `sh run.sh`.
+Save the files above, then run `sh run.sh`.
 
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
 ### Bastille
 
 > [!WARNING]
-> Bastille's OCI support is **experimental**. It requires `buildah`, shares the host network stack (`inherit`), and persists image-declared volumes under `--data-path`.
+> Bastille's OCI support is **experimental**. It requires `buildah` and shares the host network stack (`inherit`). Mount volumes with `--volume HOST JAIL`; without it, image-declared volumes are stored under `${bastille_volumesdir}/${jail}`.
 
 ```yaml
 services:
   transmission:
+    name: transmission
     image: "ghcr.io/daemonless/transmission:latest"
-    container_name: transmission
-    network_mode: host  # jail shares host networking
+    network:
+      - mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=UTC
       - USER=
       - PASS=<PASS>
+    volumes:
+      - "/path/to/containers/transmission:/config"
+      - "/path/to/downloads:/downloads"
+      - "/path/to/containers/transmission/watch:/watch"
 ```
 
-Save as `podman-compose.yml`, then run `bastille up`. Or via CLI:
+Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
 
 ```bash
 bastille create -O \
@@ -195,7 +210,9 @@ bastille create -O \
   --env TZ=UTC \
   --env USER= \
   --env PASS=<PASS> \
-  --data-path /path/to/containers/transmission \
+  --volume /path/to/containers/transmission /config \
+  --volume /path/to/downloads /downloads \
+  --volume /path/to/containers/transmission/watch /watch \
   transmission ghcr.io/daemonless/transmission:latest inherit
 ```
 
@@ -235,8 +252,8 @@ Save as `transmission-deploy.yaml`, then run `ansible-playbook transmission-depl
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-| `USER` | `` | Optional: Web UI Username |
-| `PASS` | `<PASS>` | Optional: Web UI Password |
+| `USER` | `` | Web UI Username |
+| `PASS` | `<PASS>` | Web UI Password |
 
 ### Volumes
 

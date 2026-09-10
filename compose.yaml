@@ -18,8 +18,14 @@ x-daemonless:
       PUID: "User ID for the application process"
       PGID: "Group ID for the application process"
       TZ: "Timezone for the container"
-      USER: "Optional: Web UI Username"
-      PASS: "Optional: Web UI Password"
+      USER:
+        desc: "Web UI Username"
+        optional: true
+        level: primary
+      PASS:
+        desc: "Web UI Password"
+        optional: true
+        level: primary
     volumes:
       /config: "Configuration directory"
       /downloads: "Download directory"
