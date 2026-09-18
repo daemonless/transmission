@@ -7,6 +7,7 @@ Source: dbuild templates
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/transmission?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/transmission/commits)
+[![OCI Pulls](https://img.shields.io/docker/pulls/daemonless/transmission?style=flat-square&label=OCI+Pulls&color=blue)](https://hub.docker.com/r/daemonless/transmission)
 
 Lightweight BitTorrent client with a web UI for managing torrent downloads.
 
