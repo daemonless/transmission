@@ -43,9 +43,9 @@ services:
       - USER=  # Web UI Username
       - PASS=<PASS>  # Web UI Password
     volumes:
-      - "/path/to/containers/transmission:/config"
+      - "/containers/transmission:/config"
       - "/path/to/downloads:/downloads"
-      - "/path/to/containers/transmission/watch:/watch"
+      - "/containers/transmission/watch:/watch"
     ports:
       - "9091:9091"
       - "51413:51413"
@@ -100,11 +100,11 @@ services:
       - transmission_watch: /watch
 volumes:
   transmission:
-    device: '/path/to/containers/transmission'
+    device: '/containers/transmission'
   downloads:
     device: 'downloads'
   transmission_watch:
-    device: '/path/to/containers/transmission/watch'
+    device: '/containers/transmission/watch'
 ```
 
 **Makejail**:
@@ -120,57 +120,6 @@ OPTION from=ghcr.io/daemonless/transmission:${tag}
 ```
 
 Save the files above, then run `appjail-director up`.
-
-
-> [!WARNING]
-> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
->
-> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
-
-### Podman CLI
-
-```bash
-podman run -d --name transmission \
-  -p 9091:9091 \
-  -p 51413:51413 \
-  -p 51413:51413 \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=UTC \
-  -e USER= \
-  -e PASS=<PASS> \
-  -v /path/to/containers/transmission:/config \
-  -v /path/to/downloads:/downloads \
-  -v /path/to/containers/transmission/watch:/watch \
-  ghcr.io/daemonless/transmission:latest
-```
-
-Save as `run.sh`, then run `sh run.sh`.
-
-### AppJail
-
-
-```bash
-appjail oci run -Pd \
-  -o overwrite=force \
-  -o container="args:--pull" \
-  -o virtualnet=":<random> default" \
-  -o nat \
-  -o expose="9091:9091 proto:tcp" \
-  -o expose="51413:51413 proto:tcp" \
-  -o expose="51413:51413 proto:udp" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=UTC \
-  -e USER= \
-  -e PASS=<PASS> \
-  -o fstab="/path/to/containers/transmission /config <pseudofs>" \
-  -o fstab="/path/to/downloads /downloads <pseudofs>" \
-  -o fstab="/path/to/containers/transmission/watch /watch <pseudofs>" \
-  ghcr.io/daemonless/transmission:latest transmission
-```
-
-Save the files above, then run `sh run.sh`.
 
 
 > [!WARNING]
@@ -197,52 +146,12 @@ services:
       - USER=
       - PASS=<PASS>
     volumes:
-      - "/path/to/containers/transmission:/config"
+      - "/containers/transmission:/config"
       - "/path/to/downloads:/downloads"
-      - "/path/to/containers/transmission/watch:/watch"
+      - "/containers/transmission/watch:/watch"
 ```
 
-Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
-
-```bash
-bastille create -O \
-  --env PUID=1000 \
-  --env PGID=1000 \
-  --env TZ=UTC \
-  --env USER= \
-  --env PASS=<PASS> \
-  --volume /path/to/containers/transmission /config \
-  --volume /path/to/downloads /downloads \
-  --volume /path/to/containers/transmission/watch /watch \
-  transmission ghcr.io/daemonless/transmission:latest inherit
-```
-
-### Ansible
-
-```yaml
-- name: Deploy transmission
-  containers.podman.podman_container:
-    name: transmission
-    image: "ghcr.io/daemonless/transmission:latest"
-    state: started
-    restart_policy: always
-    env:
-      PUID: "1000"
-      PGID: "1000"
-      TZ: "UTC"
-      USER: ""
-      PASS: "<PASS>"
-    ports:
-      - "9091:9091"
-      - "51413:51413"
-      - "51413:51413"
-    volumes:
-      - "/path/to/containers/transmission:/config"
-      - "/path/to/downloads:/downloads"
-      - "/path/to/containers/transmission/watch:/watch"
-```
-
-Save as `transmission-deploy.yaml`, then run `ansible-playbook transmission-deploy.yaml`.
+Save as `bastille-compose.yml`, then run `bastille up`.
 
 ## Parameters
 
