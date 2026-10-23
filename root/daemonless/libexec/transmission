@@ -1,0 +1,8 @@
+#!/bin/sh
+# Start transmission; /init has already dropped to the run user.
+
+export HOME=/config
+
+export TRANSMISSION_WEB_HOME=/usr/local/share/transmission/web
+
+exec /usr/local/bin/transmission-daemon -f -g /config --port 9091

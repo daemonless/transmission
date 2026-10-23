@@ -1,5 +1,5 @@
 ARG BASE_VERSION=15.1
-FROM ghcr.io/daemonless/base:${BASE_VERSION}
+FROM ghcr.io/daemonless/base-exec:${BASE_VERSION}
 
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="transmission-daemon transmission-web ca_root_nss"
@@ -54,9 +54,9 @@ RUN mkdir -p /config /downloads /watch && \
 
 # Copy service definition and init scripts
 COPY root/ /
+RUN chmod +x /daemonless/libexec/transmission /daemonless/init.d/*
 
-# Make scripts executable
-RUN chmod +x /etc/services.d/transmission/run /etc/cont-init.d/* 2>/dev/null || true
+CMD ["/daemonless/libexec/transmission"]
 
 # --- Expose (Injected by Generator) ---
 {%- if ports %}
