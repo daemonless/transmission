@@ -152,6 +152,7 @@ services:
 ```
 
 Save as `bastille-compose.yml`, then run `bastille up`.
+Open `http://<server>:9091` from another machine (the server's own browser can't use a published port).
 
 ## Parameters
 
