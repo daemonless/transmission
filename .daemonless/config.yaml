@@ -1,7 +1,8 @@
 icon: ':simple-transmission:'
 cit:
-  mode: port
+  mode: health
   port: 9091
+  health: /transmission/web/
 build:
   pkg_name: transmission-daemon
   architectures:
