@@ -40,7 +40,7 @@ services:
       - PUID=1000  # User ID for the application process
       - PGID=1000  # Group ID for the application process
       - TZ=UTC  # Timezone for the container
-      - USER=  # Web UI Username
+      - USER=  # Web UI Username (default: transmission when PASS is set)
       - PASS=<PASS>  # Web UI Password
     volumes:
       - "/containers/transmission:/config"
@@ -163,7 +163,7 @@ Open `http://<server>:9091` from another machine (the server's own browser can't
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-| `USER` | `` | Web UI Username |
+| `USER` | `` | Web UI Username (default: transmission when PASS is set) |
 | `PASS` | `<PASS>` | Web UI Password |
 
 ### Volumes
