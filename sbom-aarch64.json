@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-12T23:49:49Z",
+  "generated": "2026-11-17T16:33:45Z",
   "image": "transmission",
   "tags": {
     "pkg-aarch64": {
       "app_version": "4.1.4",
       "arch": "aarch64",
-      "generated": "2026-11-12T23:48:11Z",
+      "generated": "2026-11-17T16:31:54Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -403,7 +403,7 @@
               "BSD2CLAUSE"
             ],
             "name": "pkg",
-            "version": "2.8.4"
+            "version": "2.9.2"
           },
           {
             "licenses": [
@@ -453,7 +453,7 @@
     "pkg-latest-aarch64": {
       "app_version": "4.1.4",
       "arch": "aarch64",
-      "generated": "2026-11-12T23:48:16Z",
+      "generated": "2026-11-17T16:31:58Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
