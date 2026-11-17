@@ -19,11 +19,13 @@ x-daemonless:
       PGID: "Group ID for the application process"
       TZ: "Timezone for the container"
       USER:
-        desc: "Web UI Username"
+        desc: "Web UI Username (default: transmission when PASS is set)"
         optional: true
         level: primary
       PASS:
         desc: "Web UI Password"
+        type: secret
+        generate: false
         optional: true
         level: primary
     volumes:
@@ -39,7 +41,7 @@ services:
     image: ghcr.io/daemonless/transmission:latest
     container_name: transmission
     restart: unless-stopped
-    
+
     environment:
       - PUID=1000
       - PGID=1000

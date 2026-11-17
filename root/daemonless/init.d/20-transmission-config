@@ -37,3 +37,15 @@ if [ ! -f /config/settings.json ]; then
 EOF
     chown bsd:bsd /config/settings.json
 fi
+
+if [ -n "${PASS}" ]; then
+    rpc_user=${USER:-transmission}
+    echo "Enabling Transmission RPC authentication for user '${rpc_user}'"
+    tmp=$(mktemp /config/settings.json.XXXXXX)
+    jq --arg u "${rpc_user}" --arg p "${PASS}" \
+        '.["rpc-authentication-required"] = true | .["rpc-username"] = $u | .["rpc-password"] = $p' \
+        /config/settings.json > "${tmp}" && mv "${tmp}" /config/settings.json
+    if [ "$(id -u)" = 0 ]; then
+        chown bsd:bsd /config/settings.json
+    fi
+fi
